@@ -6,7 +6,7 @@ import YoutubeHelper from "../helper/YoutubeHelper";
 import BotScheduler from "./BotScheduler";
 import PhotoCommenter from "./util/PhotoCommenter";
 
-const TOKEN = process.env.TELEGRAM_TOKEN;
+const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 
 const WELCOME_MESSAGE = "Bem vindos gurizada!";
 
@@ -32,7 +32,7 @@ class Bot {
   youtubeHelper: YoutubeHelper;
 
   constructor(botName: string) {
-    this.bot = new TelegramBot(TOKEN, {
+    this.bot = new TelegramBot(TELEGRAM_TOKEN, {
       webHook: {
         port: parseInt(process.env.PORT)
       }
@@ -48,7 +48,7 @@ class Bot {
 
     const url = process.env.APP_URL || "https://botaviano.herokuapp.com:443";
     if (url) {
-      this.bot.setWebHook(`${url}/bot${TOKEN}`);
+      this.bot.setWebHook(`${url}/bot${TELEGRAM_TOKEN}`);
     }
 
     this.bot.on("new_chat_members", async message => {

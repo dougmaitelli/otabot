@@ -10,4 +10,5 @@ fs.writeFileSync(
   process.env.GCP_CRED
 );
 
+console.log("BOT INIT");
 new Bot(BOT_NAME);
