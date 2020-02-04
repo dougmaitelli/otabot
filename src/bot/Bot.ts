@@ -11,7 +11,6 @@ const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 const WELCOME_MESSAGE = "Bem vindos gurizada!";
 
 const bypassMessages = [
-  "Bom Dia",
   "Um Abraço",
   "Um Beijo",
   "Um Queijo",
