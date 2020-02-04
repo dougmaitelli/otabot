@@ -64,6 +64,10 @@ class Bot {
     });
 
     this.bot.on("text", async (message: TelegramBot.Message) => {
+      if (message.text.startsWith("/")) {
+        return;
+      }
+
       return await this.processMessage(message);
     });
 
