@@ -68,6 +68,14 @@ class Bot {
 
       return await this.sendMessage(message.chat.id, `${lastVideoLink}`);
     });
+    
+    this.bot.onText(/\/say/, async (message: TelegramBot.Message) => {
+      if (message.from.username !== "dougmaitelli") {
+        return;
+      }
+
+      return await this.sendMessage(-1001463888212, message.text.substring("/say".length).trim());
+    });
 
     this.bot.on("text", async (message: TelegramBot.Message) => {
       if (message.text.startsWith("/")) {
