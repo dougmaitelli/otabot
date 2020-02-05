@@ -56,14 +56,14 @@ class Bot {
       await this.sendMessage(chatId, WELCOME_MESSAGE);
     });
 
-    this.bot.onText(/\/getChatId/, async (message: TelegramBot.Message) => {
+    this.bot.onText(/\/getchatid/, async (message: TelegramBot.Message) => {
       return await this.sendMessage(
         message.chat.id,
         `:gear: ${message.chat.id}`
       );
     });
 
-    this.bot.onText(/\/lastVideo/, async (message: TelegramBot.Message) => {
+    this.bot.onText(/\/lastvideo/, async (message: TelegramBot.Message) => {
       const lastVideoLink = await this.youtubeHelper.getLastVideoLink();
 
       return await this.sendMessage(message.chat.id, `${lastVideoLink}`);
