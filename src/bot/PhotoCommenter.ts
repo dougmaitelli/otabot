@@ -1,3 +1,6 @@
+import Bot from "./Bot";
+import TelegramBot = require("node-telegram-bot-api");
+
 const labelCommentMap = {
   "cat|cats": "Aff, foto de gato denovo!",
   hamburger: "Meu deus! Um Hamburguer ia cair bem!!!",
@@ -12,7 +15,13 @@ const labelCommentMap = {
 };
 
 class PhotoCommenter {
-  commentPhoto(photoInfo): string {
+  private bot: Bot;
+
+  constructor(bot: Bot) {
+    this.bot = bot;
+  }
+
+  async commentPhoto(message: TelegramBot.Message, photoInfo): Promise<void> {
     const labels = photoInfo.labelAnnotations;
 
     let photoComment = null;
@@ -34,7 +43,7 @@ class PhotoCommenter {
     }
 
     if (photoComment) {
-      //return photoComment;
+      return await this.bot.sendMessage(message.chat.id, photoComment);
     }
 
     const texts = photoInfo.textAnnotations;
@@ -42,7 +51,7 @@ class PhotoCommenter {
     if (texts.length > 0) {
       const description = texts[0].description.toLowerCase();
 
-      return description;
+      return await this.bot.processMessage(message, description);
     }
   }
 }

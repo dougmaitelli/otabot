@@ -1,10 +1,11 @@
 import emoji from "node-emoji";
 import TelegramBot from "node-telegram-bot-api";
+import Constants from "../Constants";
 import DialogFlowHelper from "../helper/DialogFlowHelper";
 import VisionHelper from "../helper/VisionHelper";
 import YoutubeHelper from "../helper/YoutubeHelper";
 import BotScheduler from "./BotScheduler";
-import PhotoCommenter from "./util/PhotoCommenter";
+import PhotoCommenter from "./PhotoCommenter";
 
 const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 
@@ -38,7 +39,7 @@ class Bot {
     });
     this.botName = botName;
 
-    this.photoCommenter = new PhotoCommenter();
+    this.photoCommenter = new PhotoCommenter(this);
 
     this.dialogFlowHelper = new DialogFlowHelper();
     this.visionHelper = new VisionHelper();
@@ -68,13 +69,16 @@ class Bot {
 
       return await this.sendMessage(message.chat.id, `${lastVideoLink}`);
     });
-    
+
     this.bot.onText(/\/say/, async (message: TelegramBot.Message) => {
-      if (message.from.username !== "dougmaitelli") {
+      if (message.from.username !== Constants.ADMIN) {
         return;
       }
 
-      return await this.sendMessage(-1001463888212, message.text.substring("/say".length).trim());
+      return await this.sendMessage(
+        Constants.GROUP_CHAT_ID,
+        message.text.substring("/say".length).trim()
+      );
     });
 
     this.bot.on("text", async (message: TelegramBot.Message) => {
@@ -171,19 +175,16 @@ class Bot {
       );
     }
 
-    const photoComment = this.photoCommenter.commentPhoto(result);
-
-    if (photoComment) {
-      return await this.processMessage(message, photoComment);
-    }
+    await this.photoCommenter.commentPhoto(message, result);
   }
 
   async sendMessage(
     chatId: number,
     text: string,
     options: TelegramBot.SendMessageOptions = undefined
-  ) {
-    return await this.bot.sendMessage(chatId, emoji.emojify(text), options);
+  ): Promise<void> {
+    await this.bot.sendMessage(chatId, emoji.emojify(text), options);
+    return;
   }
 }
 

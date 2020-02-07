@@ -1,8 +1,7 @@
 import { CronJob } from "cron";
+import Constants from "../Constants";
 import YoutubeHelper from "../helper/YoutubeHelper";
 import Bot from "./Bot";
-
-const GROUP_CHAT_ID = -1001463888212;
 
 class BotScheduler {
   bot: Bot;
@@ -19,7 +18,7 @@ class BotScheduler {
       async () => {
         const lastVideoLink = await youtubeHelper.getLastVideoLink();
         await this.bot.sendMessage(
-          GROUP_CHAT_ID,
+          Constants.GROUP_CHAT_ID,
           `Passando pra lembrar que tem vídeo novo no canal!\n${lastVideoLink}`
         );
       },
