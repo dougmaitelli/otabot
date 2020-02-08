@@ -16,7 +16,7 @@ const bypassMessages: RegExp[] = [
   /^um beijo!*$/,
   /^um queijo!*$/,
   /^vivendo mundo afora!*$/,
-  /^vai!*$/,
+  /^v+a+i+!*$/,
   /e tudo mais$/
 ];
 
