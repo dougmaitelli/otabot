@@ -11,13 +11,13 @@ const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 
 const WELCOME_MESSAGE = "Bem vindos gurizada!";
 
-const bypassMessages = [
-  "Um Abraço",
-  "Um Beijo",
-  "Um Queijo",
-  "Vivendo Mundo Afora",
-  "Vai!",
-  "E tudo mais"
+const bypassMessages: RegExp[] = [
+  /^um abraco!*$/,
+  /^um beijo!*$/,
+  /^um queijo!*$/,
+  /^vivendo mundo afora!*$/,
+  /^vai!*$/,
+  /e tudo mais$/
 ];
 
 class Bot {
@@ -99,8 +99,10 @@ class Bot {
   }
 
   isBypassMessage(message: string) {
+    const messageTest = message.toLowerCase();
+
     for (let bM of bypassMessages) {
-      if (message.toLowerCase().indexOf(bM.toLowerCase()) == 0) {
+      if (messageTest.match(bM)) {
         return true;
       }
     }
