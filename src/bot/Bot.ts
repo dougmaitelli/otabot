@@ -12,7 +12,7 @@ const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 const WELCOME_MESSAGE = "Bem vindos gurizada!";
 
 const bypassMessages: RegExp[] = [
-  /^um abraco!*$/,
+  /^um abraço!*$/,
   /^um beijo!*$/,
   /^um queijo!*$/,
   /^vivendo mundo afora!*$/,
