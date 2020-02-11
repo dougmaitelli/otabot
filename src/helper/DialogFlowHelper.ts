@@ -1,6 +1,6 @@
 import dialogflow from "dialogflow";
 
-const DIALOGFLOW_AGENT = "newagent-kphxxu";
+const DIALOGFLOW_PROJECT_ID = "newagent-kphxxu";
 
 class DialogFlowHelper {
   sessionClient: dialogflow.SessionsClient;
@@ -14,7 +14,7 @@ class DialogFlowHelper {
     message: string
   ): Promise<string> {
     const sessionPath = this.sessionClient.sessionPath(
-      DIALOGFLOW_AGENT,
+      DIALOGFLOW_PROJECT_ID,
       conversationId
     );
 
