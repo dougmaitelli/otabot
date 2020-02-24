@@ -14,7 +14,7 @@ const WELCOME_MESSAGE = "Bem vindos gurizada!";
 const bypassMessages: RegExp[] = [
   /^um abraço!*$/,
   /^um beijo!*$/,
-  /^um queijo!*$/,
+  /^(e )?um queijo!*$/,
   /^vivendo mundo afora!*$/,
   /^v+a+i+!*$/,
   /e tudo mais$/
