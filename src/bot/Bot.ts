@@ -179,6 +179,10 @@ class Bot {
     text: string,
     descriptions: any[]
   ): Promise<void> {
+    if (!descriptions || descriptions.length === 0) {
+      return;
+    }
+
     await this.sendMessage(
       chatId,
       `${text}\n` +
