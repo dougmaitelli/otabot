@@ -162,33 +162,32 @@ class Bot {
 
     const result = await this.visionHelper.getInfoOnPhoto(fileStream);
 
-    const labels = result.labelAnnotations;
-    const texts = result.textAnnotations;
-
     //Debug
     if (message.chat.type === "private") {
-      this.sendMessage(
-        chatId,
-        "Text:\n" +
-          texts
-            .map(value => {
-              return value.description;
-            })
-            .join("\n")
-      );
+      const texts = result.textAnnotations;
+      const labels = result.labelAnnotations;
 
-      this.sendMessage(
-        chatId,
-        "Photo Labels:\n" +
-          labels
-            .map(value => {
-              return value.description;
-            })
-            .join("\n")
-      );
+      await this.debugDescriptions(chatId, "Texts", texts);
+      await this.debugDescriptions(chatId, "Photo Labels", labels);
     }
 
     await this.photoCommenter.commentPhoto(message, result);
+  }
+
+  async debugDescriptions(
+    chatId: number,
+    text: string,
+    descriptions: any[]
+  ): Promise<void> {
+    await this.sendMessage(
+      chatId,
+      `${text}\n` +
+        descriptions
+          .map(value => {
+            return value.description;
+          })
+          .join("\n")
+    );
   }
 
   async sendMessage(
