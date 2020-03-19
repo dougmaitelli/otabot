@@ -14,7 +14,7 @@ class BotScheduler {
     this.youtubeHelper = youtubeHelper;
 
     this.videoReminderJob = new CronJob(
-      "0 1 15 * * *",
+      "0 1 20 * * *",
       async () => {
         const lastVideoLink = await youtubeHelper.getLastVideoLink();
         await this.bot.sendMessage(
@@ -24,7 +24,7 @@ class BotScheduler {
       },
       null,
       false,
-      "America/Los_Angeles"
+      "America/Sao_Paulo"
     );
     this.videoReminderJob.start();
   }
