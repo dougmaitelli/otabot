@@ -51,18 +51,17 @@ class Bot {
     if (url) {
       this.bot.setWebHook(`${url}/bot${TELEGRAM_TOKEN}`);
     }
-    
-    this.bot.on("left_chat_member", async message => {
-      const chatId = message.chat.id;
-
-      await this.sendMessage(chatId, JSON.stringify(message));
-      await this.sendMessage(chatId, LEAVE_MESSAGE);
-    });
 
     this.bot.on("new_chat_members", async message => {
       const chatId = message.chat.id;
 
       await this.sendMessage(chatId, WELCOME_MESSAGE);
+    });
+
+    this.bot.on("left_chat_member", async message => {
+      const chatId = message.chat.id;
+
+      await this.sendMessage(chatId, `${LEAVE_MESSAGE}`);
     });
 
     this.bot.onText(/\/getchatid/, async (message: TelegramBot.Message) => {
