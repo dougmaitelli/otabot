@@ -10,6 +10,7 @@ import PhotoCommenter from "./PhotoCommenter";
 const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 
 const WELCOME_MESSAGE = "Bem vindos gurizada!";
+const LEAVE_MESSAGE = "Já vai tarde...";
 
 const bypassMessages: RegExp[] = [
   /^um abraço!*$/,
@@ -50,6 +51,13 @@ class Bot {
     if (url) {
       this.bot.setWebHook(`${url}/bot${TELEGRAM_TOKEN}`);
     }
+    
+    this.bot.on("left_chat_member", async message => {
+      const chatId = message.chat.id;
+
+      await this.sendMessage(chatId, JSON.stringify(message));
+      await this.sendMessage(chatId, LEAVE_MESSAGE);
+    });
 
     this.bot.on("new_chat_members", async message => {
       const chatId = message.chat.id;
