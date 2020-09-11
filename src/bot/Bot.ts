@@ -12,6 +12,19 @@ const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 const WELCOME_MESSAGE = "Bem vindos gurizada!";
 const LEAVE_MESSAGE = "Já vai tarde...";
 
+const COMMAND_GETCHATID = "/getchatid";
+const COMMAND_LASTVIDEO = "/lastvideo";
+const COMMAND_DICE = "/dice";
+
+const myCommands: TelegramBot.BotCommand[] = [
+  { command: COMMAND_GETCHATID, description: "Get current chat id" },
+  {
+    command: COMMAND_LASTVIDEO,
+    description: "Get latest video from the channel",
+  },
+  { command: COMMAND_DICE, description: "Roll a dice" },
+];
+
 const bypassMessages: RegExp[] = [
   /^um abraço!*$/,
   /^um beijo!*$/,
@@ -64,18 +77,26 @@ class Bot {
       await this.sendMessage(chatId, `${LEAVE_MESSAGE}`);
     });
 
-    this.bot.onText(/\/getchatid/, async (message: TelegramBot.Message) => {
-      return await this.sendMessage(
-        message.chat.id,
-        `:gear: ${message.chat.id}`
-      );
-    });
+    this.bot.setMyCommands(myCommands);
 
-    this.bot.onText(/\/lastvideo/, async (message: TelegramBot.Message) => {
-      const lastVideo = await this.youtubeHelper.getLatestVideo();
+    this.bot.onText(
+      new RegExp(`/\\${COMMAND_GETCHATID}/`),
+      async (message: TelegramBot.Message) => {
+        return await this.sendMessage(
+          message.chat.id,
+          `:gear: ${message.chat.id}`
+        );
+      }
+    );
 
-      return await this.sendMessage(message.chat.id, `${lastVideo.shortURL}`);
-    });
+    this.bot.onText(
+      new RegExp(`/\\${COMMAND_LASTVIDEO}/`),
+      async (message: TelegramBot.Message) => {
+        const lastVideo = await this.youtubeHelper.getLatestVideo();
+
+        return await this.sendMessage(message.chat.id, `${lastVideo.shortURL}`);
+      }
+    );
 
     this.bot.onText(/\/say/, async (message: TelegramBot.Message) => {
       if (message.from.username !== Constants.ADMIN) {
@@ -88,9 +109,12 @@ class Bot {
       );
     });
 
-    this.bot.onText(/\/dice/, async (message: TelegramBot.Message) => {
-      return await this.bot.sendDice(message.chat.id);
-    });
+    this.bot.onText(
+      new RegExp(`/\\${COMMAND_DICE}/`),
+      async (message: TelegramBot.Message) => {
+        return await this.bot.sendDice(message.chat.id);
+      }
+    );
 
     this.bot.on("text", async (message: TelegramBot.Message) => {
       if (message.text.startsWith("/")) {
