@@ -89,7 +89,7 @@ class Bot {
     });
 
     this.bot.onText(/\/dice/, async (message: TelegramBot.Message) => {
-      return await this.bot.sendDice(Constants.GROUP_CHAT_ID);
+      return await this.bot.sendDice(message.chat.id);
     });
 
     this.bot.on("text", async (message: TelegramBot.Message) => {
