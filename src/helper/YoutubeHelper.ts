@@ -7,13 +7,13 @@ class YoutubeHelper {
     this.youtube = new YouTube(process.env.YOUTUBE_API_KEY);
   }
 
-  async getLastVideoLink() {
+  async getLatestVideo() {
     const videos = await this.youtube.searchVideos("", 1, {
       channelId: "UC68lo9oCCz9VbEFUqRD_mrg",
-      order: "date"
+      order: "date",
     });
 
-    return videos[0].shortURL;
+    return videos[0];
   }
 }
 

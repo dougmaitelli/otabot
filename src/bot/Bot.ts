@@ -18,7 +18,7 @@ const bypassMessages: RegExp[] = [
   /^(e )?um queijo!*$/,
   /^vivendo mundo afora!*$/,
   /^v+a+i+!*$/,
-  /e tudo mais$/
+  /e tudo mais$/,
 ];
 
 class Bot {
@@ -35,8 +35,8 @@ class Bot {
   constructor(botName: string) {
     this.bot = new TelegramBot(TELEGRAM_TOKEN, {
       webHook: {
-        port: parseInt(process.env.PORT)
-      }
+        port: parseInt(process.env.PORT),
+      },
     });
     this.botName = botName;
 
@@ -52,13 +52,13 @@ class Bot {
       this.bot.setWebHook(`${url}/bot${TELEGRAM_TOKEN}`);
     }
 
-    this.bot.on("new_chat_members", async message => {
+    this.bot.on("new_chat_members", async (message) => {
       const chatId = message.chat.id;
 
       await this.sendMessage(chatId, WELCOME_MESSAGE);
     });
 
-    this.bot.on("left_chat_member", async message => {
+    this.bot.on("left_chat_member", async (message) => {
       const chatId = message.chat.id;
 
       await this.sendMessage(chatId, `${LEAVE_MESSAGE}`);
@@ -72,9 +72,12 @@ class Bot {
     });
 
     this.bot.onText(/\/lastvideo/, async (message: TelegramBot.Message) => {
-      const lastVideoLink = await this.youtubeHelper.getLastVideoLink();
+      const lastVideo = await this.youtubeHelper.getLatestVideo();
 
-      return await this.sendMessage(message.chat.id, `${lastVideoLink}`);
+      return await this.sendMessage(
+        message.chat.id,
+        `${JSON.stringify(lastVideo)}`
+      );
     });
 
     this.bot.onText(/\/say/, async (message: TelegramBot.Message) => {
@@ -155,7 +158,7 @@ class Bot {
         processedText
       );
       await this.sendMessage(chatId, response, {
-        reply_to_message_id: message.message_id
+        reply_to_message_id: message.message_id,
       });
       return;
     }
@@ -194,7 +197,7 @@ class Bot {
       chatId,
       `${text}\n` +
         descriptions
-          .map(value => {
+          .map((value) => {
             return value.description;
           })
           .join("\n")

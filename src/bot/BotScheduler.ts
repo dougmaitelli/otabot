@@ -16,10 +16,10 @@ class BotScheduler {
     this.videoReminderJob = new CronJob(
       "0 1 20 * * *",
       async () => {
-        const lastVideoLink = await youtubeHelper.getLastVideoLink();
+        const lastVideo = await youtubeHelper.getLatestVideo();
         await this.bot.sendMessage(
           Constants.GROUP_CHAT_ID,
-          `Passando pra lembrar que tem vídeo novo no canal!\n${lastVideoLink}`
+          `Passando pra lembrar que tem vídeo novo no canal!\n${lastVideo.shortURL}`
         );
       },
       null,
