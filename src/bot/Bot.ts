@@ -80,7 +80,7 @@ class Bot {
     this.bot.setMyCommands(myCommands);
 
     this.bot.onText(
-      new RegExp(`/\\${COMMAND_GETCHATID}/`),
+      new RegExp(`^\\${COMMAND_GETCHATID}`),
       async (message: TelegramBot.Message) => {
         return await this.sendMessage(
           message.chat.id,
@@ -90,7 +90,7 @@ class Bot {
     );
 
     this.bot.onText(
-      new RegExp(`/\\${COMMAND_LASTVIDEO}/`),
+      new RegExp(`^\\${COMMAND_LASTVIDEO}`),
       async (message: TelegramBot.Message) => {
         const lastVideo = await this.youtubeHelper.getLatestVideo();
 
@@ -110,7 +110,7 @@ class Bot {
     });
 
     this.bot.onText(
-      new RegExp(`/\\${COMMAND_DICE}/`),
+      new RegExp(`^\\${COMMAND_DICE}`),
       async (message: TelegramBot.Message) => {
         return await this.bot.sendDice(message.chat.id);
       }
