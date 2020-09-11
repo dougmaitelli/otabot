@@ -3,6 +3,8 @@ import Constants from "../Constants";
 import YoutubeHelper from "../helper/YoutubeHelper";
 import Bot from "./Bot";
 
+const CHECK_INTERVAL_MINUTES = 30;
+
 class BotScheduler {
   bot: Bot;
   youtubeHelper: YoutubeHelper;
@@ -14,13 +16,19 @@ class BotScheduler {
     this.youtubeHelper = youtubeHelper;
 
     this.videoReminderJob = new CronJob(
-      "0 1 20 * * *",
+      `0 */${CHECK_INTERVAL_MINUTES} * * * *`,
       async () => {
         const lastVideo = await youtubeHelper.getLatestVideo();
-        await this.bot.sendMessage(
-          Constants.GROUP_CHAT_ID,
-          `Passando pra lembrar que tem vídeo novo no canal!\n${lastVideo.shortURL}`
-        );
+
+        const minutesSinceLastVideo =
+          (new Date().getTime() - lastVideo.publishedAt.getTime()) / 1000 / 60;
+
+        if (minutesSinceLastVideo < CHECK_INTERVAL_MINUTES) {
+          await this.bot.sendMessage(
+            Constants.GROUP_CHAT_ID,
+            `Passando pra lembrar que tem vídeo novo no canal!\n${lastVideo.shortURL}`
+          );
+        }
       },
       null,
       false,
