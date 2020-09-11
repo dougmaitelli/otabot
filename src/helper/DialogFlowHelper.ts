@@ -1,9 +1,10 @@
-import dialogflow from "dialogflow";
+import dialogflow from "@google-cloud/dialogflow";
+import { SessionsClient } from "@google-cloud/dialogflow/build/src/v2";
 
 const DIALOGFLOW_PROJECT_ID = "newagent-kphxxu";
 
 class DialogFlowHelper {
-  sessionClient: dialogflow.SessionsClient;
+  sessionClient: SessionsClient;
 
   constructor() {
     this.sessionClient = new dialogflow.SessionsClient();
@@ -13,7 +14,7 @@ class DialogFlowHelper {
     conversationId: string,
     message: string
   ): Promise<string> {
-    const sessionPath = this.sessionClient.sessionPath(
+    const sessionPath = this.sessionClient.projectAgentSessionPath(
       DIALOGFLOW_PROJECT_ID,
       conversationId
     );
@@ -23,9 +24,9 @@ class DialogFlowHelper {
       queryInput: {
         text: {
           text: message,
-          languageCode: "pt-BR"
-        }
-      }
+          languageCode: "pt-BR",
+        },
+      },
     });
 
     const result = responses[0].queryResult;
