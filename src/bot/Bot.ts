@@ -76,7 +76,7 @@ class Bot {
 
       return await this.sendMessage(
         message.chat.id,
-        `${JSON.stringify(lastVideo)}`
+        `${lastVideo.publishedAt}`
       );
     });
 
