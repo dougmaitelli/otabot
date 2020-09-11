@@ -158,7 +158,7 @@ class Bot {
     );
   }
 
-  private async processMessage(
+  async processMessage(
     message: TelegramBot.Message,
     processedText: string = message.text
   ): Promise<void> {
