@@ -74,9 +74,12 @@ class Bot {
     this.bot.onText(/\/lastvideo/, async (message: TelegramBot.Message) => {
       const lastVideo = await this.youtubeHelper.getLatestVideo();
 
+      const minutesSinceLastVideo =
+        (new Date().getTime() - lastVideo.publishedAt.getTime()) / 1000;
+
       return await this.sendMessage(
         message.chat.id,
-        `${lastVideo.publishedAt}`
+        `${minutesSinceLastVideo}`
       );
     });
 

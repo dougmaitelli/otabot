@@ -4,7 +4,7 @@ export interface YoutubeVideo {
   title: string;
   description: string;
   shortURL: string;
-  publishedAt: string;
+  publishedAt: Date;
 }
 
 class YoutubeHelper {
@@ -20,7 +20,12 @@ class YoutubeHelper {
       order: "date",
     });
 
-    return videos[0] as YoutubeVideo;
+    return {
+      title: videos[0].title,
+      description: videos[0].description,
+      shortURL: videos[0].shortURL,
+      publishedAt: new Date(videos[0].publishedAt),
+    };
   }
 }
 
