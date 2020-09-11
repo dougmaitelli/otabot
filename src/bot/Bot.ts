@@ -133,7 +133,7 @@ class Bot {
     return "@" + this.botName;
   }
 
-  isBypassMessage(message: string) {
+  private isBypassMessage(message: string) {
     const messageTest = message.toLowerCase();
 
     for (let bM of bypassMessages) {
@@ -145,7 +145,10 @@ class Bot {
     return false;
   }
 
-  messageMentionsBot(message: TelegramBot.Message, processedText: string) {
+  private messageMentionsBot(
+    message: TelegramBot.Message,
+    processedText: string
+  ) {
     return (
       processedText.toLowerCase().indexOf(this.getBotTag()) >= 0 ||
       (message.caption &&
@@ -155,7 +158,7 @@ class Bot {
     );
   }
 
-  async processMessage(
+  private async processMessage(
     message: TelegramBot.Message,
     processedText: string = message.text
   ): Promise<void> {
@@ -189,7 +192,7 @@ class Bot {
     }
   }
 
-  async processPhoto(message: TelegramBot.Message): Promise<void> {
+  private async processPhoto(message: TelegramBot.Message): Promise<void> {
     const chatId = message.chat.id;
 
     const photoId = message.photo[message.photo.length - 1].file_id;
@@ -209,7 +212,7 @@ class Bot {
     await this.photoCommenter.commentPhoto(message, result);
   }
 
-  async debugDescriptions(
+  private async debugDescriptions(
     chatId: number,
     text: string,
     descriptions: any[]

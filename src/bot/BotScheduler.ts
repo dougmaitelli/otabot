@@ -51,7 +51,7 @@ const COMEMORATIVE_DATES = {
   },
   7: {
     8: "Feliz dia do Pesquisador!",
-    13: "Feliz dia do Rock!",
+    13: "Feliz dia do Rock! :sign-of-the-horns: :guitar:",
     20: "Feliz dia do Amigo!",
     26: "Feliz dia dos Avós!",
   },
