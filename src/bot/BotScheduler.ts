@@ -138,7 +138,7 @@ class BotScheduler {
     this.videoReminderJob.start();
 
     this.everyDayJob = new CronJob(
-      `0 0 12 */1 * *`,
+      `0 0 10 */1 * *`,
       async () => {
         const currentDate = new Date();
 
