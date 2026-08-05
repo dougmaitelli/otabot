@@ -16,7 +16,7 @@
     "@google-cloud/dialogflow": "^3.2.0",
     "get-stream": "^5.1.0",
     "node-emoji": "^1.10.0",
-    "node-telegram-bot-api": "^0.50.0",
+    "node-telegram-bot-api": "^1.2.0",
     "simple-youtube-api": "^5.2.1"
   },
   "devDependencies": {
