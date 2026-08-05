@@ -1,5 +1,5 @@
 import Bot from "./Bot";
-import TelegramBot from "node-telegram-bot-api";
+import { Message } from "node-telegram-bot-api";
 
 const LABEL_COMMENT_MAP = {
   "corn|corn kernels|sweet corn": ["MILHOOOOOO!!!!!"],
@@ -21,7 +21,7 @@ class PhotoCommenter {
     this.bot = bot;
   }
 
-  async commentPhoto(message: TelegramBot.Message, photoInfo): Promise<void> {
+  async commentPhoto(message: Message, photoInfo): Promise<void> {
     const labels = photoInfo.labelAnnotations;
 
     let photoComment = null;
@@ -46,7 +46,7 @@ class PhotoCommenter {
 
     if (photoComment) {
       return await this.bot.sendMessage(message.chat.id, photoComment, {
-        reply_to_message_id: message.message_id
+        reply_parameters: { message_id: message.message_id }
       });
     }
 

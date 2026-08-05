@@ -11,18 +11,15 @@
   "author": "",
   "license": "UNLICENSED",
   "dependencies": {
-    "@google-cloud/vision": "^2.1.1",
-    "cron": "^1.8.2",
-    "@google-cloud/dialogflow": "^3.2.0",
-    "get-stream": "^5.1.0",
-    "node-emoji": "^1.10.0",
+    "@google-cloud/vision": "^5.3.7",
+    "cron": "^4.4.0",
+    "@google-cloud/dialogflow": "^7.9.0",
+    "node-emoji": "^2.2.0",
     "node-telegram-bot-api": "^1.2.0",
     "simple-youtube-api": "^5.2.1"
   },
   "devDependencies": {
-    "@types/cron": "^1.7.2",
-    "@types/node-emoji": "^1.8.1",
-    "@types/node-telegram-bot-api": "^0.50.2",
-    "typescript": "^4.0.2"
+    "@types/node": "^26.1.2",
+    "typescript": "^7.0.2"
   }
 }

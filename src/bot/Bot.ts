@@ -1,5 +1,9 @@
 import emoji from "node-emoji";
-import TelegramBot from "node-telegram-bot-api";
+import TelegramBot, {
+  BotCommand,
+  Message,
+  SendMessageParams,
+} from "node-telegram-bot-api";
 import Constants from "../Constants";
 import DialogFlowHelper from "../helper/DialogFlowHelper";
 import VisionHelper from "../helper/VisionHelper";
@@ -16,7 +20,7 @@ const COMMAND_GETCHATID = "/getchatid";
 const COMMAND_LASTVIDEO = "/lastvideo";
 const COMMAND_DICE = "/dice";
 
-const myCommands: TelegramBot.BotCommand[] = [
+const myCommands: BotCommand[] = [
   { command: COMMAND_GETCHATID, description: "Get current chat id" },
   {
     command: COMMAND_LASTVIDEO,
@@ -81,7 +85,7 @@ class Bot {
 
     this.bot.onText(
       new RegExp(`^\\${COMMAND_GETCHATID}`),
-      async (message: TelegramBot.Message) => {
+      async (message: Message) => {
         return await this.sendMessage(
           message.chat.id,
           `:gear: ${message.chat.id}`
@@ -91,14 +95,14 @@ class Bot {
 
     this.bot.onText(
       new RegExp(`^\\${COMMAND_LASTVIDEO}`),
-      async (message: TelegramBot.Message) => {
+      async (message: Message) => {
         const lastVideo = await this.youtubeHelper.getLatestVideo();
 
         return await this.sendMessage(message.chat.id, `${lastVideo.shortURL}`);
       }
     );
 
-    this.bot.onText(/\/say/, async (message: TelegramBot.Message) => {
+    this.bot.onText(/\/say/, async (message: Message) => {
       if (message.from.username !== Constants.ADMIN) {
         return;
       }
@@ -111,12 +115,12 @@ class Bot {
 
     this.bot.onText(
       new RegExp(`^\\${COMMAND_DICE}`),
-      async (message: TelegramBot.Message) => {
+      async (message: Message) => {
         return await this.bot.sendDice(message.chat.id);
       }
     );
 
-    this.bot.on("text", async (message: TelegramBot.Message) => {
+    this.bot.on("text", async (message: Message) => {
       if (message.text.startsWith("/")) {
         return;
       }
@@ -124,7 +128,7 @@ class Bot {
       return await this.processMessage(message);
     });
 
-    this.bot.on("photo", async (message: TelegramBot.Message) => {
+    this.bot.on("photo", async (message: Message) => {
       return await this.processPhoto(message);
     });
   }
@@ -146,7 +150,7 @@ class Bot {
   }
 
   private messageMentionsBot(
-    message: TelegramBot.Message,
+    message: Message,
     processedText: string
   ) {
     return (
@@ -159,7 +163,7 @@ class Bot {
   }
 
   async processMessage(
-    message: TelegramBot.Message,
+    message: Message,
     processedText: string = message.text
   ): Promise<void> {
     const chatId = message.chat.id;
@@ -186,13 +190,13 @@ class Bot {
         processedText
       );
       await this.sendMessage(chatId, response, {
-        reply_to_message_id: message.message_id,
+        reply_parameters: { message_id: message.message_id },
       });
       return;
     }
   }
 
-  private async processPhoto(message: TelegramBot.Message): Promise<void> {
+  private async processPhoto(message: Message): Promise<void> {
     const chatId = message.chat.id;
 
     const photoId = message.photo[message.photo.length - 1].file_id;
@@ -235,7 +239,7 @@ class Bot {
   async sendMessage(
     chatId: number,
     text: string,
-    options: TelegramBot.SendMessageOptions = undefined
+    options: Omit<SendMessageParams, "chat_id" | "text"> = undefined
   ): Promise<void> {
     await this.bot.sendMessage(chatId, emoji.emojify(text), options);
     return;
